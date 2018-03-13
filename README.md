@@ -24,11 +24,11 @@ You're reading it! Below I describe how I addressed each rubric point and where 
 
 Both version are similar in the sense they implement a [finite-state machine](https://en.wikipedia.org/wiki/Finite-state_machine) to command the drone. They are similar but not exactly the same. On the [`backyard_flyer_solution.py`](./backyard_flyer_solution.py) the states and transitions represented are:
 
-!(backyard_flyer_solution.py state machine)(./images/backyard_flyer_state_machine.png)
+![backyard_flyer_solution.py state machine](./images/backyard_flyer_state_machine.png)
 
 The state machine implemented on [`motion_planning.py`](./motion_planning_from_seed_project.py), adds another state to the previous one:
 
-!(motion_planning_from_seed_project.py state machine)(./images/motion_planning_state_machine.png)
+![motion_planning_from_seed_project.py state machine](./images/motion_planning_state_machine.png)
 
 There is a new state, `PLANNING`, between  `ARMING` and `TAKEOFF`. When the drone is at the state `ARMING` and it is actually armed ([line 67](./motion_planning_from_seed_project.py#L67)) on the `state_callback` method ([lines 64 to 73](./motion_planning_from_seed_project.py#L62-L73)), the transition to `PLANNING` is executed on the method [`plan_path`](./motion_planning_from_seed_project.py#L115-167).
 
