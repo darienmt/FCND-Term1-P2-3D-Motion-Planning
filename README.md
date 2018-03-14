@@ -28,11 +28,16 @@ Both version are similar in the sense they implement a [finite-state machine](ht
 
 The state machine implemented on [`motion_planning.py`](./motion_planning_from_seed_project.py), adds another state to the previous one:
 
-![motion_planning_from_seed_project.py state machine](./images/motion_planning_state_machine.png)
+![motion_planning_from_seed_project.py state machine](./images/motion_planning__state_machine.png)
 
-There is a new state, `PLANNING`, between  `ARMING` and `TAKEOFF`. When the drone is at the state `ARMING` and it is actually armed ([line 67](./motion_planning_from_seed_project.py#L67)) on the `state_callback` method ([lines 64 to 73](./motion_planning_from_seed_project.py#L62-L73)), the transition to `PLANNING` is executed on the method [`plan_path`](./motion_planning_from_seed_project.py#L115-167).
+There is a new state, `PLANNING`, between  `ARMING` and `TAKEOFF`. When the drone is at the state `ARMING` and it is actually armed ([line 66](./motion_planning_from_seed_project.py#L66)) on the `state_callback` method ([lines 61 to 72](./motion_planning_from_seed_project.py#L61-L72)), the transition to `PLANNING` is executed on the method [`plan_path`](./motion_planning_from_seed_project.py#L114-161). This method responsibility is to calculate the waypoints necessary for the drone to arrive at its destination.
 
-
+On the `plan_path` method:
+- The map is loaded ([line 133](./motion_planning_from_seed_project.py#L133))
+- The grid is calculated at [line 136](./motion_planning_from_seed_project.py#L136) using the method [`create_grid`](./planning_utils.py#L6-L41) from the module [`planning_utils.py`](./planning_utils.py).
+- The goal grid is set 10 north and east from local position on [line 144]((./motion_planning_from_seed_project.py#L144)).
+- To find the path to the goal, [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) is executed on [line 151](./motion_planning_from_seed_project.py#L151) using the [`a_star`](./planning_utils.py#L91-L140) method from the module [`planning_utils.py`](./planning_utils.py).
+- The waypoints are generated at [line 157](./motion_planning_from_seed_project.py#L157), and they are sent to the simulator using the method [`send_waypoints`](././motion_planning_from_seed_project.py#L109-L112) at [line 161](./motion_planning_from_seed_project.py#L161).
 
 ## Implementing Your Path Planning Algorithm
 
