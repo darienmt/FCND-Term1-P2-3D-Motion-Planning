@@ -30,18 +30,20 @@ The state machine implemented on [`motion_planning.py`](./motion_planning_from_s
 
 ![motion_planning_from_seed_project.py state machine](./images/motion_planning__state_machine.png)
 
-There is a new state, `PLANNING`, between  `ARMING` and `TAKEOFF`. When the drone is at the state `ARMING` and it is actually armed ([line 66](./motion_planning_from_seed_project.py#L66)) on the `state_callback` method ([lines 61 to 72](./motion_planning_from_seed_project.py#L61-L72)), the transition to `PLANNING` is executed on the method [`plan_path`](./motion_planning_from_seed_project.py#L114-161). This method responsibility is to calculate the waypoints necessary for the drone to arrive at its destination.
+There is a new state, `PLANNING`, between  `ARMING` and `TAKEOFF`. When the drone is at the state `ARMING` and it is actually armed ([line 66](./motion_planning_from_seed_project.py#L66)) on the `state_callback` method ([lines 61 to 72](./motion_planning_from_seed_project.py#L61-L72)), the transition to `PLANNING` is executed on the method [`plan_path`](./motion_planning_from_seed_project.py#L114-160). This method responsibility is to calculate the waypoints necessary for the drone to arrive at its destination.
 
 On the `plan_path` method:
 - The map is loaded ([line 133](./motion_planning_from_seed_project.py#L133))
-- The grid is calculated at [line 136](./motion_planning_from_seed_project.py#L136) using the method [`create_grid`](./planning_utils.py#L6-L41) from the module [`planning_utils.py`](./planning_utils.py).
+- The grid is calculated at [line 136](./motion_planning_from_seed_project.py#L136) using the method [`create_grid`](./planning_utils_from_seed_project.py#L6-L41) from the module [`planning_utils.py`](./planning_utils_from_seed_project.py).
 - The goal grid is set 10 north and east from local position on [line 144]((./motion_planning_from_seed_project.py#L144)).
-- To find the path to the goal, [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) is executed on [line 151](./motion_planning_from_seed_project.py#L151) using the [`a_star`](./planning_utils.py#L91-L140) method from the module [`planning_utils.py`](./planning_utils.py).
+- To find the path to the goal, [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) is executed on [line 151](./motion_planning_from_seed_project.py#L151) using the [`a_star`](./planning_utils_from_seed_project.py#L91-L140) method from the module [`planning_utils.py`](./planning_utils_from_seed_project.py).
 - The waypoints are generated at [line 157](./motion_planning_from_seed_project.py#L157), and they are sent to the simulator using the method [`send_waypoints`](././motion_planning_from_seed_project.py#L109-L112) at [line 161](./motion_planning_from_seed_project.py#L161).
 
 ## Implementing Your Path Planning Algorithm
 
 ### In the starter code, we assume that the home position is where the drone first initializes, but in reality you need to be able to start planning from anywhere. Modify your code to read the global home location from the first line of the `colliders.csv` file and set that position as global home (`self.set_home_position()`)
+
+The home position is read at [motion_planning.py line 124](./motion_planning.py#L124). It use the function [`read_home`](./planning_utils.py#L145-L155) added to `planning_utils.py`.
 
 ### In the starter code, we assume the drone takes off from map center, but you'll need to be able to takeoff from anywhere. Retrieve your current position in geodetic coordinates from `self._latitude()`, `self._longitude()` and `self._altitude()`. Then use the utility function `global_to_local()` to convert to local position (using `self.global_home()` as well, which you just set)
 

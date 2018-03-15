@@ -1,7 +1,7 @@
 from enum import Enum
 from queue import PriorityQueue
 import numpy as np
-import re
+
 
 def create_grid(data, drone_altitude, safety_distance):
     """
@@ -136,20 +136,9 @@ def a_star(grid, h, start, goal):
     else:
         print('**********************')
         print('Failed to find a path!')
-        print('**********************')
+        print('**********************') 
     return path[::-1], path_cost
 
 def heuristic(position, goal_position):
     return np.linalg.norm(np.array(position) - np.array(goal_position))
 
-def read_home(filename):
-    """
-    Reads home (lat, lon) from the first line of the `file`.
-    """
-    with open(filename) as f:
-        first_line = f.readline()
-    match = re.match(r'^lat0 (.*), lon0 (.*)$', first_line)
-    if match:
-        lat = match.group(1)
-        lon = match.group(2)
-    return np.fromstring(f'{lat},{lon}', dtype='Float64', sep=',')
