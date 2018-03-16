@@ -47,9 +47,14 @@ The home position is read at [motion_planning.py line 124](./motion_planning.py#
 
 ### In the starter code, we assume the drone takes off from map center, but you'll need to be able to takeoff from anywhere. Retrieve your current position in geodetic coordinates from `self._latitude()`, `self._longitude()` and `self._altitude()`. Then use the utility function `global_to_local()` to convert to local position (using `self.global_home()` as well, which you just set)
 
+This coordinates transformation is done at [line 130](./motion_planning.py#L130).
+
 ### In the starter code, the start point for planning is hardcoded as map center. Change this to be your current local position.
 
+The grid star point is calculated from [line 144 to 146](./motion_planning.py#L144-L146).
+
 ### In the starter code, the goal position is hardcoded as some location 10 m north and 10 m east of map center. Modify this to be set as some arbitrary position on the grid given any geodetic coordinates (latitude, longitude)
+
 
 ### Write your search algorithm. Minimum requirement here is to add diagonal motions to the A* implementation provided, and assign them a cost of sqrt(2). However, you're encouraged to get creative and try other methods from the lessons and beyond!
 

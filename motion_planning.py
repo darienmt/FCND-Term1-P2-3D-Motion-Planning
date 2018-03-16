@@ -127,6 +127,8 @@ class MotionPlanning(Drone):
         self.set_home_position(lon0, lat0, 0)
 
         # TODO: retrieve current global position
+        local_north, local_east, local_down = global_to_local(self.global_position, self.global_home)
+        print(f'Local => north : {local_north}, east : {local_east}, down : {local_down}')
 
         # TODO: convert to current local position using global_to_local()
 
@@ -139,11 +141,13 @@ class MotionPlanning(Drone):
         grid, north_offset, east_offset = create_grid(data, TARGET_ALTITUDE, SAFETY_DISTANCE)
         print("North offset = {0}, east offset = {1}".format(north_offset, east_offset))
         # Define starting point on the grid (this is just grid center)
-        grid_start = (-north_offset, -east_offset)
+        grid_start_north = int(np.ceil(local_north - north_offset))
+        grid_start_east = int(np.ceil(local_east - east_offset))
+        grid_start = (grid_start_north, grid_start_east)
         # TODO: convert start position to current position rather than map center
 
         # Set goal as some arbitrary position on the grid
-        grid_goal = (-north_offset + 10, -east_offset + 10)
+        grid_goal = (grid_start_north + 10, grid_start_east + 10)
         # TODO: adapt to set goal as latitude / longitude position and convert
 
         # Run A* to find a path from start to goal
