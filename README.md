@@ -59,9 +59,27 @@ Three new parameters were added to the [motion_planning.py](./motion_planning.py
 
 ### Write your search algorithm. Minimum requirement here is to add diagonal motions to the A* implementation provided, and assign them a cost of sqrt(2). However, you're encouraged to get creative and try other methods from the lessons and beyond!
 
-The diagonals movements were implemented by adding them to the [Action enum](./planning_utils.py#L59-L62). The [valid_actions method](./planning_utils.py#L92-L99) was modified to take those actions into account.
+The diagonals movements were implemented by adding them to the [Action enum](./planning_utils.py#L59-L62). The [valid_actions method](./planning_utils.py#L92-L99) was modified to take those actions into account. Here is an example of the A* trajectories on a grid:
+
+![A* grid](./images/a_star_grid.png)
+
+When the diagonal actions are implemented, the trajectories to the same goals changed:
+
+![A* grid with diagonals](./images/a_star_grid_diagonals.png)
 
 ### Cull waypoints from the path you determine using search.
+
+The path was pruned at [line 162](./motion_planning.py#L162) using collinearity([collinearity_prune function](./planning_utils.py#L170-L201)) with the method provided by the lectures. The trajectories after this transformation are:
+
+![A* grid with diagonals and collinearity prune](./images/a_star_grid_diagonals_prune.png)
+
+It is interesting to see the how the execution time, cost and waypoint count change with each variation of the algorithm. The following figures show those parameters for the four goals used:
+
+![A* grid execution time](./images/grid_execution_time.png)
+
+![A* grid cost](./images/grid_cost.png)
+
+![A* grid waypoint count](./images/grid_waypoints_count.png)
 
 ## Executing the flight
 
