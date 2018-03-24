@@ -167,7 +167,7 @@ def read_home(filename):
         lon = match.group(2)
     return np.fromstring(f'{lat},{lon}', dtype='Float64', sep=',')
 
-def collinearity_prune(path, epsilon=1e-6):
+def collinearity_prune(path, epsilon=1e-5):
     """
     Prune path points from `path` using collinearity.
     """
