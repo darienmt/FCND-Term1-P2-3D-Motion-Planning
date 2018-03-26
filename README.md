@@ -1,13 +1,44 @@
 # FCND-Term1-P2-3D-Motion-Planning
 Udacity Flying Car Nanodegree - Term 1 - Project 2 - 3D Motion Planning
 
+This is the second project on [Udacity's Flying Car Nanodegree](https://www.udacity.com/course/flying-car-nanodegree--nd787). It consists on planning and executing a trajectory of a drone on a urban environment. Builded on top of the event-based strategy utilized on the [first project](https://github.com/darienmt/FCND-Term1-P1-Backyard-Flyer), the complexity of path planning on a 3D environment is explored. The code communicate with [Udacity FCND Simulator](https://github.com/udacity/FCND-Simulator-Releases/releases) using [Udacidrone](https://udacity.github.io/udacidrone/) API.
+
+# Prerequisites
 To run this project you need to have the following software installed:
 
 - [Miniconda](https://conda.io/miniconda.html) with Python 3.6. I had some problems while installing this on my Mac after having an older version install and some other packages install with Homebrew. I have to manually delete all the `~/*conda*` directory from my home and then install it with `bash Miniconda3-latest-MacOSX-x86_64.sh -b`.
 - [Udacity FCND Simulator](https://github.com/udacity/FCND-Simulator-Releases/releases) the latest the better.
 
+# Project description
 
-# Run the
+The following are the main code used on the project:
+
+- [motion_planning_from_seed_project.py](./motion_planning_from_seed_project.py): This is the based implementation for this project provided by Udacity on [its seed project](https://github.com/udacity/FCND-Motion-Planning).
+- [planning_utils_from_seed_project.py](./planning_utils_from_seed_project.py): It was also provided by Udacity on the [its seed project](https://github.com/udacity/FCND-Motion-Planning). It contains an implementation of the [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) in addition to utility functions.
+- [motion_planning.py](./motion_planning.py): This version extends the provided implementation with the following features:
+  - The global home location is read from the [colliders.csv](./colliders.csv) file.
+  - The goal location is set from command line arguments (--goal_lat, --goal_lon, --goal_alt).
+  - The calculated path is pruned with a collinearity function to eliminate unnecessary waypoints.
+- [planning_utils.py](./planning_utils.py): This file is used by [motion_planning.py](./motion_planning.py) instead of the seed version. It provides support for the features mention above and also extends the A* search algorithm to include diagonals actions.
+
+Here are some examples of trajectories found with this code:
+
+![A* grid with diagonals and collinearity prune](./images/a_star_grid_diagonals_prune.png)
+
+It is interesting to see the how the execution time, cost and waypoint count change with each variation of the algorithm. The following figures show those parameters for the four goals used:
+
+![A* grid execution time](./images/grid_execution_time.png)
+
+![A* grid cost](./images/grid_cost.png)
+
+![A* grid waypoint count](./images/grid_waypoints_count.png)
+
+ 
+
+# Run the Project
+
+In order to run the
+
 
 
 # [Project Rubric](https://review.udacity.com/#!/rubrics/1534/view)
@@ -72,14 +103,6 @@ When the diagonal actions are implemented, the trajectories to the same goals ch
 The path was pruned at [line 162](./motion_planning.py#L162) using collinearity([collinearity_prune function](./planning_utils.py#L170-L201)) with the method provided by the lectures. The trajectories after this transformation are:
 
 ![A* grid with diagonals and collinearity prune](./images/a_star_grid_diagonals_prune.png)
-
-It is interesting to see the how the execution time, cost and waypoint count change with each variation of the algorithm. The following figures show those parameters for the four goals used:
-
-![A* grid execution time](./images/grid_execution_time.png)
-
-![A* grid cost](./images/grid_cost.png)
-
-![A* grid waypoint count](./images/grid_waypoints_count.png)
 
 ## Executing the flight
 
