@@ -1,10 +1,12 @@
 # FCND-Term1-P2-3D-Motion-Planning
 Udacity Flying Car Nanodegree - Term 1 - Project 2 - 3D Motion Planning
 
-This is the second project on [Udacity's Flying Car Nanodegree](https://www.udacity.com/course/flying-car-nanodegree--nd787). It consists on planning and executing a trajectory of a drone on a urban environment. Builded on top of the event-based strategy utilized on the [first project](https://github.com/darienmt/FCND-Term1-P1-Backyard-Flyer), the complexity of path planning on a 3D environment is explored. The code communicate with [Udacity FCND Simulator](https://github.com/udacity/FCND-Simulator-Releases/releases) using [Udacidrone](https://udacity.github.io/udacidrone/) API.
+This is the second project on [Udacity's Flying Car Nanodegree](https://www.udacity.com/course/flying-car-nanodegree--nd787). It consists of planning and executing a trajectory of a drone in an urban environment. Built on top of the event-based strategy utilized on the [first project](https://github.com/darienmt/FCND-Term1-P1-Backyard-Flyer), the complexity of path planning in a 3D environment is explored. The code communicates with [Udacity FCND Simulator](https://github.com/udacity/FCND-Simulator-Releases/releases) using [Udacidrone](https://udacity.github.io/udacidrone/) API.
+
+![Drone flying](./images/drone_flying.gif)
 
 # Prerequisites
-To run this project you need to have the following software installed:
+To run this project, you need to have the following software installed:
 
 - [Miniconda](https://conda.io/miniconda.html) with Python 3.6. I had some problems while installing this on my Mac after having an older version install and some other packages install with Homebrew. I have to manually delete all the `~/*conda*` directory from my home and then install it with `bash Miniconda3-latest-MacOSX-x86_64.sh -b`.
 - [Udacity FCND Simulator](https://github.com/udacity/FCND-Simulator-Releases/releases) the latest the better.
@@ -33,13 +35,65 @@ It is interesting to see the how the execution time, cost and waypoint count cha
 
 ![A* grid waypoint count](./images/grid_waypoints_count.png)
 
- 
+Videos of the drone flying in the simulator:
+- [Grid Goal 1](./videos/grid_01.mov)
+- [Grid Goal 2](./videos/grid_02.mov)
+- Grid Goal 3: [First part](./videos/grid_03_1.mov) and [second part](./videos/grid_03_2.mov)
+
+In addition to that implementation using a grid, the following code use a graph to search for the path to the goal:
+
+- [graph_motion_planning](./graph_motion_planning.py): It has the same features as [motion_planning.py](./motion_planning.py), but detegates all the searching functionality to the method [calculate_waypoints](./graph_planning_utils.py#L144-L174).
+- [graph_planning_utils.py](./graph_planning_utils.py): Implements a A* search algorithm using a graph calculated from the colliders information.
+
+Here are some examples of trajectories found/no found in this code:
+
+![A* graph](./images/graph_a_star.png)
+
+It is interesting to see how much faster this algorithm is compared to an A* on a grid. It is also interesting to see the path was not found in the upper-right position in this case. Another characteristic is waypoint count, in this case, was higher than the one found with A* on a grid.
+
+Videos of the drones flying in the simulator with this trajectories:
+- [Graph Goal 1](./videos/graph_01.mov)
+- [Graph Goal 2](./videos/graph_02.mov)
+- Graph Goal 3: [First part](./videos/graph_03_1.mov) and [second part](./videos/graph_03_2.mov)
 
 # Run the Project
 
-In order to run the
+To run the code you need to change to the repo directory and create the conda environment with the following command:
 
+```
+conda env create -f environment.yml
+```
 
+**Note**: This environment configuration is provided by Udacity at the [FCND Term 1 Starter Kit repo](https://github.com/udacity/FCND-Term1-Starter-Kit).
+
+Activate your environment with the following command:
+
+```
+source activate fcnd
+```
+
+Start the drone simulator. You will see something similar to the following image:
+
+![Udacity's Simulator](./images/simulator.png)
+
+Select the **Motion Planning** project, and you will get to the following environment:
+
+![Motion Planning Simulator](./images/motion_planning_simulator.png)
+
+Now is time to run the code, for the A* grid implementation:
+```
+python motion_planning.py --goal_lon -122.40195876 --goal_lat 37.79673913 --goal_alt -0.147
+```
+
+For the graph implementation:
+
+```
+python graph_motion_planning.py --goal_lon -122.40195876 --goal_lat 37.79673913 --goal_alt -0.147
+```
+
+There are examples for different goal coordinates on the following two .sh:
+- [run_motion_planning.sh](./run_motion_planning.sh)
+- [run_graph_motion_planning.sh](./run_graph_motion_planning.sh)
 
 # [Project Rubric](https://review.udacity.com/#!/rubrics/1534/view)
 
@@ -72,7 +126,7 @@ On the `plan_path` method:
 
 ## Implementing Your Path Planning Algorithm
 
-### In the starter code, we assume that the home position is where the drone first initializes, but in reality you need to be able to start planning from anywhere. Modify your code to read the global home location from the first line of the `colliders.csv` file and set that position as global home (`self.set_home_position()`)
+### In the starter code, we assume that the home position is where the drone first initializes, but in reality, you need to be able to start planning from anywhere. Modify your code to read the global home location from the first line of the `colliders.csv.` file and set that position as global home (`self.set_home_position()`)
 
 The home position is read at [motion_planning.py line 124](./motion_planning.py#L124). It use the function [`read_home`](./planning_utils.py#L145-L155) added to `planning_utils.py`.
 
@@ -106,4 +160,9 @@ The path was pruned at [line 162](./motion_planning.py#L162) using collinearity(
 
 ## Executing the flight
 
-### This is simply a check on whether it all worked. Send the waypoints and the autopilot should fly you from start to goal!
+### This is simply a check on whether it all worked. Send the waypoints, and the autopilot should fly you from start to goal!
+
+The following are links to videos directing the drone to different locations:
+- [Grid Goal 1](./videos/grid_01.mov)
+- [Grid Goal 2](./videos/grid_02.mov)
+- Grid Goal 3: [First part](./videos/grid_03_1.mov) and [second part](./videos/grid_03_2.mov)
